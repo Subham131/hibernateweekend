@@ -3,23 +3,15 @@ package com.hibernate.example.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import com.hibernate.example.domain.Employee;
+import com.hibernate.example.util.HibernateUtil;
 
 public class EmployeeDao {
-
+//try with resources
 	public String createEmployee(Employee employee) {
-
-		Configuration configuration = null;
-		SessionFactory sessionFactory = null;
-		Session session = null;
-
-		try {
-			configuration = new Configuration();
-			configuration.configure();// hibernate configuration file
-			sessionFactory = configuration.buildSessionFactory();
-			session = sessionFactory.openSession();
+		try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+				Session session = sessionFactory.openSession()) {
 			Transaction tx = session.beginTransaction();
 			Integer pkId = (Integer) session.save(employee);
 			tx.commit();
@@ -28,13 +20,19 @@ public class EmployeeDao {
 		} catch (Exception e) {
 			System.out.println("inside catch block");
 			throw new RuntimeException(e);
-		} finally {
-			if (sessionFactory != null) {
-				sessionFactory.close();
-			}
-			if (session != null) {
-				session.close();
-			}
+		}
+	}
+
+	public Employee retrieveEmployeeById(Integer id) {
+		try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+				Session session = sessionFactory.openSession()) {
+			Transaction tx = session.beginTransaction();
+			Employee employee = session.load(Employee.class, id);
+			tx.commit();
+			return employee;
+		} catch (Exception e) {
+			System.out.println("inside catch block");
+			throw new RuntimeException(e);
 		}
 	}
 }

@@ -11,11 +11,12 @@ public class TestClient {
 		
 		Employee employee = new Employee();
 		employee.setAge(11);
-		employee.setEmpId(5);
+		//employee.setEmpId(5);
 		employee.setEmployeeName("xyz");
 		
-		String createEmployee = employeeDao.createEmployee(employee);
+		//String createEmployee = employeeDao.createEmployee(employee);
+		Employee retrieveEmployeeById = employeeDao.retrieveEmployeeById(1);
 		
-		System.out.println(createEmployee);
+		System.out.println(retrieveEmployeeById);
 	}
 }

@@ -6,9 +6,13 @@
 <hibernate-mapping>
 	<class name="com.hibernate.example.domain.Employee"
 		table="emp_tbl">
-		<id name="empId" type="int" column="emp_id_pk" />
-		<property name="employeeName" column="emp_name"/>
-		<property name="age" column="emp_age"/>
+		<id name="empId" type="int" column="emp_id_pk">
+			<generator class="sequence">
+				<param name="sequence_name">emp_sequence</param>
+		</generator>
+		</id>
+		<property name="employeeName" column="emp_name" />
+		<property name="age" column="emp_age" />
 	</class>
 
 </hibernate-mapping>
